@@ -1,0 +1,11 @@
+<!-- Toolbar -->
+<mat-toolbar color="primary" class="app-header">
+  <div><a href="www.feedbackcollection.com" target="_blank" class="positronx">Feedback Collection</a></div>
+  <span class="nav-tool-items">
+    <a *ngIf="!loginResponse.isSuccess" mat-button routerLink="login"  routerLinkActive="active"> <span class="material-icons">lock </span> Log in</a>
+    <a *ngIf="loginResponse.isSuccess" mat-button routerLink="feedback-report" ><span class="material-icons">fact_check</span>Reports</a>    
+    <a *ngIf="loginResponse.isSuccess" mat-button ><span class="material-icons">person</span>Admin</a>
+    <a *ngIf="loginResponse.isSuccess" mat-button (click)="logout()" ><span class="material-icons">fact_check</span>Logout</a>
+  </span>
+</mat-toolbar>
+<router-outlet></router-outlet>

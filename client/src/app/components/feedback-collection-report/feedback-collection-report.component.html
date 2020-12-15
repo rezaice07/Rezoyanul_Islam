@@ -1,0 +1,50 @@
+<div class="feedback-wrapper" >
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        Feed Collection Report
+      </mat-card-title>
+    </mat-card-header>
+  </mat-card>
+  <br>
+  
+  <div *ngIf="loading;else table">
+    <mat-spinner class="center"></mat-spinner>
+  </div>
+
+  <ng-template #table>
+    <table class="mat-table" *ngFor="let item of posts;">     
+     
+        <tr class="mat-row">
+          <td style="color:#19D2E8; font-weight: bold;" class="mat-cell">{{item.postDescription}}</td>
+          <td style="color:#19D2E8; font-weight: bold;" class="mat-cell">{{item.user.firstName}}</td>
+          <td style="color:#19D2E8; font-weight: bold;" class="mat-cell">{{item.createdDate | date: 'dd/MM/yyyy'}}</td> 
+          <td style="color:#19D2E8; font-weight: bold; text-align: center;" class="mat-cell">{{item.postComments.length}} Comments</td>      
+        </tr>
+
+        <tr *ngFor="let comment of item.postComments;">
+          <td>{{comment.comment}}</td>
+          <td>{{comment.user!=null?comment.user.firstName:""}}</td>
+          <td>{{comment.createdDate | date: 'dd/MM/yyyy'}}</td> 
+          <td>
+            <mat-grid-list cols="2" rowHeight="2:1">
+              <mat-grid-tile>
+                <span (click)="commentVoting(comment.id,1)" class="material-icons">keyboard_arrow_up</span> {{comment.totalLikes}}
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <span (click)="commentVoting(comment.id,2)" class="material-icons">keyboard_arrow_down</span> {{comment.totalDisLikes}}
+              </mat-grid-tile>
+             
+            </mat-grid-list>
+          </td>      
+        </tr>
+      
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 15, 20, 30]" showFirstLastButtons (page)="pageChanged($event)">
+    </mat-paginator>
+
+  </ng-template>
+
+
+</div>
