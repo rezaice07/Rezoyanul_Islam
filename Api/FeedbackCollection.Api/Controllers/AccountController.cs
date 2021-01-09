@@ -59,12 +59,12 @@ namespace FeedbackCollection.Api.Controllers
             }
 
             //creating custom claims
-            var claims = new[] {
+            var claims = new ClaimsIdentity( new [] {
                     new Claim("Id", user.Id.ToString()),
                     new Claim("Username", user.Username),
                     new Claim("FirstName", user.FirstName),
                     new Claim("LastName", string.IsNullOrWhiteSpace(user.LastName)?"":user.LastName)
-                };
+                } );
 
             //get signing key
             var signinKey = new SymmetricSecurityKey(
@@ -73,7 +73,31 @@ namespace FeedbackCollection.Api.Controllers
             //get token expire
             int expiryInMinutes = Convert.ToInt32(_configuration["Jwt:ExpiryInMinutes"]);
 
+
             //generating a new jwt token with additional information
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = claims,
+                /*
+                issuer: _configuration["Jwt:Site"],
+                audience: _configuration["Jwt:Site"],
+                */
+                Expires = DateTime.UtcNow.AddMinutes(expiryInMinutes),
+                SigningCredentials = new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256)
+            };
+
+            //generating a new jwt token with additional information
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            /*
+            var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+            var token = tokenHandler.WriteToken(securityToken);
+
+            */
+
+            /*
             var token = new JwtSecurityToken(
               claims: claims,
               issuer: _configuration["Jwt:Site"],
@@ -81,6 +105,8 @@ namespace FeedbackCollection.Api.Controllers
               expires: DateTime.UtcNow.AddMinutes(expiryInMinutes),
               signingCredentials: new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256)
             );
+
+            */
 
             return Ok(
               new

@@ -41,6 +41,8 @@ namespace FeedbackCollection.Api.Controllers
         {
             var posts = await _postService.GetListByFilter(filter);
 
+            var currentUser = CurrentLoginUser;
+
             var model = new PostListViewModel
             {
                 Posts = posts,

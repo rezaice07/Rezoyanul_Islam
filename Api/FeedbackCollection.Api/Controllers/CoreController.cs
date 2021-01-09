@@ -1,4 +1,5 @@
 ﻿using FeedbackCollection.Data.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace FeedbackCollection.Api.Controllers
 {    
+    [Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     public class CoreController : ControllerBase
     {

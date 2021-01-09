@@ -53,14 +53,17 @@ namespace FeedbackCollection.Api
             }).AddJwtBearer(options =>
             {
                 options.SaveToken = true;
-                options.RequireHttpsMetadata = true;
+                options.RequireHttpsMetadata = false;
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    /*
                     ValidAudience = Configuration["Jwt:Site"],
-                    ValidIssuer = Configuration["Jwt:Site"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:SigningKey"]))
+                    ValidIssuer = Configuration["Jwt:Site"],                    
+                    */
+                    ValidateIssuerSigningKey=true,
+                    IssuerSigningKey= new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:SigningKey"]))
                 };
             });
 
@@ -91,8 +94,8 @@ namespace FeedbackCollection.Api
                .AllowAnyHeader()
                //.AllowCredentials()
                );
-
-            //app.UseAuthorization();
+                       
+            app.UseAuthorization();
 
             ////this middleware can be used when we do need to use [Authorize] attribute in controller or page
             //app.UseAuthentication();
